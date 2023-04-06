@@ -1,5 +1,7 @@
 # TomIBT2
 
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+
 TomIBT2 is an Arduino library for controlling the IBT-2 (H-Bridge) motor driver board.
 
 ### IBT-2 H-Bridge Usage
