@@ -1,2 +1,2 @@
 # TomIBT2
-IBT-2 H-Bridge (BTS7960) motor driver Arduino library.
+A TomIBT2 library is an Arduino library for controlling the IBT-2 (H-Bridge) motor driver board.
