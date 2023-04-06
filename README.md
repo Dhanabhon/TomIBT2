@@ -18,7 +18,7 @@ TomIBT2 is an Arduino library for controlling the IBT-2 (H-Bridge) motor driver 
 - R_PWM, pin input 5V level motor reversal
 
 ### Example
-```
+```c
 #include <TomIBT2.h>
 
 #define MOTOR_PIN_R_EN        7
