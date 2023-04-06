@@ -1,6 +1,6 @@
 # TomIBT2
 
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/dhanabhon/library/TomIBT2.svg)](https://registry.platformio.org/libraries/dhanabhon/TomIBT2) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 TomIBT2 is an Arduino library for controlling the IBT-2 (H-Bridge) motor driver board.
 
@@ -41,3 +41,5 @@ void rotateMotor(int speed, TomIBT2::Direction direction, long rampTimeMs = 1000
   motor.rampUp(direction, rampTimeMs);
 }
 ```
+### PlatformIO Registry
+- [TomIBT2](https://registry.platformio.org/libraries/dhanabhon/TomIBT2)
