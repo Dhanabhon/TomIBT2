@@ -41,5 +41,3 @@ void rotateMotor(int speed, TomIBT2::Direction direction, long rampTimeMs = 1000
   motor.rampUp(direction, rampTimeMs);
 }
 ```
-### PlatformIO Registry
-- [TomIBT2](https://registry.platformio.org/libraries/dhanabhon/TomIBT2)
