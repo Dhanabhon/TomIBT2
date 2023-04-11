@@ -73,7 +73,7 @@ void loop() {
 
 #### See also
 
-*[rampUp()](#rampup)
+* [rampUp()](#rampup)
 
 ### `rampDown()`
 
@@ -114,7 +114,7 @@ void loop() {
 
 #### See also
 
-*[rampDown()](#rampdown)
+* [rampDown()](#rampdown)
 
 
 ### `rotate()`
@@ -195,7 +195,7 @@ void loop() {
 
 #### See also
 
-*[setTargetSpeed()](#settargetspeed)
+* [setTargetSpeed()](#settargetspeed)
 
 ### `setTargetSpeedPercent()`
 
@@ -235,7 +235,7 @@ void loop() {
 
 #### See also
 
-*[setTargetSpeedPercent()](#settargetspeedpercent)
+* [setTargetSpeedPercent()](#settargetspeedpercent)
 
 ### `getCurrentSpeed()`
 
@@ -279,7 +279,7 @@ void loop() {
 
 #### See also
 
-*[getCurrentSpeed()](#getcurrentspeed)
+* [getCurrentSpeed()](#getcurrentspeed)
 
 ### `getCurrentSpeedPercent()`
 
@@ -323,7 +323,7 @@ void loop() {
 
 #### See also
 
-*[getCurrentSpeedPercent()](#getcurrentspeedpercent)
+* [getCurrentSpeedPercent()](#getcurrentspeedpercent)
 
 ### `getCurrentDirection()`
 
@@ -376,4 +376,4 @@ void loop() {
 
 #### See also
 
-*[getCurrentDirection()](#getcurrentdirection)
+* [getCurrentDirection()](#getcurrentdirection)
