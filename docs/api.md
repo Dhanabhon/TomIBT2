@@ -116,7 +116,6 @@ void loop() {
 
 * [rampDown()](#rampdown)
 
-
 ### `rotate()`
 
 Rotate the motor by setting the target speed of the motor
@@ -156,6 +155,76 @@ void loop() {
 #### See also
 
 *[rotate()](#rotate)
+
+### `stop()`
+
+Stop the motor by allowing coasting
+
+#### Syntax
+
+```c
+motor.stop();
+```
+
+#### Example
+
+```c
+#include <TomIBT2.h>
+
+#define MOTOR_PIN_R_EN        7
+#define MOTOR_PIN_L_EN        8
+#define MOTOR_PIN_RPWM        10
+#define MOTOR_PIN_LPWM        9
+
+TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
+
+void setup() {
+  motor.begin();
+}
+
+void loop() {
+    motor.stop();
+}
+```
+
+#### See also
+
+*[stop()](#stop)
+
+### `brake()`
+
+Stop the motor with braking action
+
+#### Syntax
+
+```c
+motor.brake();
+```
+
+#### Example
+
+```c
+#include <TomIBT2.h>
+
+#define MOTOR_PIN_R_EN        7
+#define MOTOR_PIN_L_EN        8
+#define MOTOR_PIN_RPWM        10
+#define MOTOR_PIN_LPWM        9
+
+TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
+
+void setup() {
+  motor.begin();
+}
+
+void loop() {
+    motor.brake();
+}
+```
+
+#### See also
+
+*[brake()](#brake)
 
 ### `setTargetSpeed()`
 
