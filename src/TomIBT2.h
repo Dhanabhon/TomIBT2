@@ -38,6 +38,8 @@ class TomIBT2 {
         void rampDown(unsigned long timeoutMs);
 
         void rotate(int speed, Direction direction);
+        void stop(void);    // Stop the motor by allowing coasting.
+        void brake(void);   // Stop the motor with braking action.
 
         void setTargetSpeed(int speed);
         void setTargetSpeedPercent(int percent);

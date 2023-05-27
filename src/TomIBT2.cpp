@@ -27,6 +27,26 @@ void TomIBT2::rotate(int speed, Direction direction) {
     analogWrite(pwmPin, this->currentSpeed);
 }
 
+void TomIBT2::stop(void) {
+    digitalWrite(R_EN_PIN, LOW);
+    digitalWrite(L_EN_PIN, LOW);
+
+    this->currentSpeed = 0;
+
+    analogWrite(RPWM_PIN, 0);
+    analogWrite(LPWM_PIN, 0);
+}
+
+void TomIBT2::brake(void) {
+    digitalWrite(R_EN_PIN, HIGH);
+    digitalWrite(L_EN_PIN, HIGH);
+
+    this->currentSpeed = 0;
+
+    analogWrite(RPWM_PIN, 0);
+    analogWrite(LPWM_PIN, 0);    
+}
+
 int TomIBT2::getCurrentSpeed(void) {
     return this->currentSpeed;
 }
