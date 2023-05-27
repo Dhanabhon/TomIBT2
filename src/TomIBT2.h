@@ -6,7 +6,6 @@
 #define _____TomIBT2__
 
 #include <Arduino.h>
-// #include <Timer.h>
 
 /*
  * IBT-2
