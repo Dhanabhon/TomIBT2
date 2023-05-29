@@ -52,7 +52,7 @@ int TomIBT2::getCurrentSpeed(void) {
 }
 
 int TomIBT2::getCurrentSpeedPercent(void) {
-    return int((this->currentSpeed / 255.0 * 100.0));
+    return int((this->currentSpeed / MAX_SPEED * 100.0));
 }
 
 TomIBT2::Direction TomIBT2::getCurrentDirection(void) {
@@ -89,7 +89,7 @@ void TomIBT2::rampUp(Direction direction,  unsigned long timeoutMs) {
 
     this->currentMillis = millis();
 
-    if (this->currentMillis - this->previousMillis >= timeoutMs / (MAX_SPEED - 0)) {
+    if (this->currentMillis - this->previousMillis >= timeoutMs / MAX_SPEED) {
         this->previousMillis = this->currentMillis;
         this->currentSpeed++;
 
@@ -109,12 +109,16 @@ void TomIBT2::rampDown(unsigned long timeoutMs) {
 
     this->currentMillis = millis();
 
-    if (this->currentMillis - this->previousMillis >= timeoutMs / (MAX_SPEED - 0)) {
+    if (this->currentMillis - this->previousMillis >= timeoutMs / MAX_SPEED) {
         this->previousMillis = this->currentMillis;
-        this->currentSpeed--;
+        
+        if (this->currentSpeed > this->targetSpeed) {
+            this->currentSpeed--;
 
-        if (this->currentSpeed <= 0) {
-            this->currentSpeed = 0;
+            if (this->currentSpeed <= this->targetSpeed) {
+                this->currentSpeed = 0;
+                stop();
+            }
         }
 
         analogWrite(pwmPin, this->currentSpeed);
