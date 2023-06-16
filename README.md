@@ -4,7 +4,7 @@
 
 TomIBT2 is an Arduino library for controlling the IBT-2 (H-Bridge) motor driver board.
 
-### Interfacing IBT-2 H-Bridge with Arduino
+### IBT-2 H-Bridge Board Pinout
 ```
      _______________________________________ 
    /                                         \
