@@ -13,10 +13,5 @@ void setup() {
 }
 
 void loop() {
-    rotateMotor(255, TomIBT2::CW, 2000);
-}
-
-void rotateMotor(int speed, TomIBT2::Direction direction, long rampTimeMs = 1000) {
-  motor.setTargetSpeed(speed);
-  motor.rampUp(direction, rampTimeMs);
+  motor.rotate(255, TomIBT2::CW);
 }
