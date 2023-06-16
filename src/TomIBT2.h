@@ -55,7 +55,7 @@ class TomIBT2 {
         byte R_IS;      // Forward drive - side current alarm ouput (Unused)
         byte L_IS;      // Reverse drive -side current alarm output (Unused)
 
-        byte MAX_SPEED = 255;
+        byte MAX_SPEED = 255;   // 100% duty cycle
 
         unsigned long currentMillis = 0;
         unsigned long previousMillis = 0; 

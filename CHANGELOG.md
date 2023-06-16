@@ -1,5 +1,10 @@
 # TomIBT2 Arduino Library Changelog
 
+## 1.1.2 - Jun 16, 2023
+
+- Fix the bug where motor rotation
+- Update and add new Arduino code example
+
 ## 1.1.1 - May 29, 2023
 
 - Fix the bug where ramping down function

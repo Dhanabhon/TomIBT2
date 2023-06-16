@@ -19,6 +19,12 @@ void TomIBT2::rotate(int speed, Direction direction) {
     digitalWrite(R_EN_PIN, HIGH);
     digitalWrite(L_EN_PIN, HIGH);
 
+    if (speed > MAX_SPEED) {
+        speed = MAX_SPEED;
+    } else if (speed < 0) {
+        speed = 0;
+    }
+
     this->currentDirection = direction;
     this->currentSpeed = speed;
 
