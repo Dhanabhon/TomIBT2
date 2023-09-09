@@ -35,6 +35,7 @@ class TomIBT2 {
 
         void rampUp(Direction direction, unsigned long timeoutMs);    // Pass in a timeout in milliseconds for how long it will take to ramp from the current speed to full speed with a linear transition.
         void rampDown(unsigned long timeoutMs);
+        void rampUpAndDown(Direction direction, unsigned long rampUpTimeoutMs, unsigned long rampDonwnTimeoutMs);
 
         void rotate(int speed, Direction direction);
         void stop(void);    // Stop the motor by allowing coasting.

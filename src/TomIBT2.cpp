@@ -130,3 +130,29 @@ void TomIBT2::rampDown(unsigned long timeoutMs) {
         analogWrite(pwmPin, this->currentSpeed);
     }
 }
+
+// NOTE: Waiting for test
+void TomITB2::rampUpAndDown(Direction direction, unsigned long rampUpTimeoutMs, unsigned long rampDonwnTimeoutMs) {
+    digitalWrite(R_EN_PIN, HIGH);
+    digitalWrite(L_EN_PIN, HIGH);
+
+    int pwmPin = (this->currentDirection == CW) ? this->RPWM_PIN : this->LPWM_PIN;
+    int fadeTimeoutMs = 0;
+
+    this->currentMillis = millis();
+
+    if (this->currentMillis - this->previousMillis > rampUpTimeoutMs) {
+        if (rampUpTimeoutMs > 0) {
+            this->currentSpeed = 255UL * (this->currentSpeed * 256UL / (F_CPU / 8000UL)) / rampUpTimeoutMs;
+        }
+
+        analogWrite(pwmPin, this->currentSpeed);
+        fadeTimeoutMs = 0;
+
+        if (rampDonwnTimeoutMs > 0) {
+            this->currentSpeed = 255UL * (this->currentSpeed * 256UL / (F_CPU / 8000UL)) / rampDonwnTimeoutMs;
+        }
+
+        analogWrite(pwmPin, this->currentSpeed);
+    }
+}
