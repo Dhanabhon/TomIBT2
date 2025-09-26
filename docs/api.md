@@ -1,8 +1,46 @@
-# TomIBT2 Library
+# TomIBT2 Library API Reference
 
-## Methods
+**Version 1.2.0** - Enhanced Arduino library for IBT-2 H-Bridge motor driver control
+
+## Constructor
+
+### `TomIBT2()`
+
+Initialize motor driver with pin assignments.
+
+#### Syntax
+
+```c
+TomIBT2 motor(r_en_pin, l_en_pin, rpwm_pin, lpwm_pin);
+```
+
+#### Parameters
+
+* **r_en_pin**: Forward drive enable pin (HIGH = enable, LOW = disable)
+* **l_en_pin**: Reverse drive enable pin (HIGH = enable, LOW = disable)
+* **rpwm_pin**: Forward PWM signal pin (must be PWM capable)
+* **lpwm_pin**: Reverse PWM signal pin (must be PWM capable)
+
+#### Example
+
+```c
+#include <TomIBT2.h>
+
+#define MOTOR_R_EN    7
+#define MOTOR_L_EN    8
+#define MOTOR_RPWM    10  // PWM pin
+#define MOTOR_LPWM    9   // PWM pin
+
+TomIBT2 motor(MOTOR_R_EN, MOTOR_L_EN, MOTOR_RPWM, MOTOR_LPWM);
+```
+
+---
+
+## Initialization Methods
 
 ### `begin()`
+
+Initialize motor driver pins and set initial state. Includes pin validation and ensures motor is stopped initially.
 
 #### Syntax
 
@@ -13,112 +51,22 @@ motor.begin();
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
 void setup() {
   motor.begin();
-}
-
-void loop() {}
-```
-
-#### See also
-
-* [begin()](#begin)
-
-
-### `rampUp()`
-
-Ramp from the current speed to full speed with a linear transition
-
-#### Syntax
-
-```c
-motor.rampUp(direction, timoutMs);
-```
-
-#### Parameters
-
-* direction: a variable of motor rotation direction controlling
-* timeoutMs: the value to ramping timeout in milliseconds
-
-#### Example
-
-```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  motor.begin();
-}
-
-void loop() {
-    motor.rampUp(TomIBT2::CW, 2000);
-    ...
 }
 ```
 
 #### See also
 
-* [rampUp()](#rampup)
+* [Constructor](#tomibt2)
 
-### `rampDown()`
+---
 
-Ramp from the current speed to full stop with a linear transition
-
-#### Syntax
-
-```c
-motor.rampDown(timoutMs);
-```
-
-#### Parameter
-
-* timeoutMs: the value to ramping timeout in milliseconds
-
-#### Example
-
-```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  motor.begin();
-}
-
-void loop() {
-    ...
-    motor.rampDown(2000);
-    ...
-}
-```
-
-#### See also
-
-* [rampDown()](#rampdown)
+## Motor Control Methods
 
 ### `rotate()`
 
-Rotate the motor by setting the target speed of the motor
+Immediately rotate motor at specified speed and direction. Stops any ongoing ramping operations.
 
 #### Syntax
 
@@ -128,37 +76,31 @@ motor.rotate(speed, direction);
 
 #### Parameters
 
-* speed: the value from 0 - 255 to set the target speed of the motor
-* direction: a variable of motor rotation direction controlling
+* **speed**: Motor speed (0-255, automatically clamped to valid range)
+* **direction**: Motor rotation direction (`TomIBT2::CW` or `TomIBT2::CCW`)
 
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  motor.begin();
-}
-
 void loop() {
-    motor.rotate(255, TomIBT2::CW);
+  // Rotate clockwise at full speed
+  motor.rotate(255, TomIBT2::CW);
+  delay(2000);
+
+  // Rotate counter-clockwise at half speed
+  motor.rotate(128, TomIBT2::CCW);
+  delay(2000);
 }
 ```
 
 #### See also
 
-*[rotate()](#rotate)
+* [stop()](#stop)
+* [brake()](#brake)
 
 ### `stop()`
 
-Stop the motor by allowing coasting
+Stop motor by disabling drive circuits (allows coasting to a stop).
 
 #### Syntax
 
@@ -169,31 +111,23 @@ motor.stop();
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  motor.begin();
-}
-
 void loop() {
-    motor.stop();
+  motor.rotate(200, TomIBT2::CW);
+  delay(3000);
+
+  motor.stop();  // Coast to stop
+  delay(2000);
 }
 ```
 
 #### See also
 
-*[stop()](#stop)
+* [brake()](#brake)
+* [rotate()](#rotate)
 
 ### `brake()`
 
-Stop the motor with braking action
+Stop motor with active braking action (immediate stop with motor resistance).
 
 #### Syntax
 
@@ -204,31 +138,143 @@ motor.brake();
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  motor.begin();
-}
-
 void loop() {
-    motor.brake();
+  motor.rotate(200, TomIBT2::CW);
+  delay(3000);
+
+  motor.brake();  // Active braking
+  delay(2000);
 }
 ```
 
 #### See also
 
-*[brake()](#brake)
+* [stop()](#stop)
+* [rotate()](#rotate)
+
+---
+
+## Ramping Control Methods
+
+### `rampUp()`
+
+Gradually increase motor speed from current speed to target speed with linear transition.
+
+#### Syntax
+
+```c
+motor.rampUp(direction, timeoutMs);
+```
+
+#### Parameters
+
+* **direction**: Motor rotation direction (`TomIBT2::CW` or `TomIBT2::CCW`)
+* **timeoutMs**: Time in milliseconds for complete ramp-up to target speed
+
+#### Example
+
+```c
+void setup() {
+  motor.begin();
+  motor.setTargetSpeedPercent(80);  // Set target to 80%
+}
+
+void loop() {
+  motor.rampUp(TomIBT2::CW, 2000);  // Ramp up over 2 seconds
+
+  if (!motor.isRamping()) {
+    // Ramping complete
+    delay(1000);
+  }
+}
+```
+
+#### See also
+
+* [rampDown()](#rampdown)
+* [setTargetSpeed()](#settargetspeed)
+* [isRamping()](#isramping)
+
+### `rampDown()`
+
+Gradually decrease motor speed from current speed to zero with linear transition.
+
+#### Syntax
+
+```c
+motor.rampDown(timeoutMs);
+```
+
+#### Parameters
+
+* **timeoutMs**: Time in milliseconds for complete ramp-down to stop
+
+#### Example
+
+```c
+void loop() {
+  // After motor is running
+  motor.rampDown(1500);  // Ramp down over 1.5 seconds
+
+  if (!motor.isRamping() && !motor.isMoving()) {
+    // Motor completely stopped
+    delay(2000);
+  }
+}
+```
+
+#### See also
+
+* [rampUp()](#rampup)
+* [isRamping()](#isramping)
+* [isMoving()](#ismoving)
+
+### `rampUpAndDown()`
+
+Automatically perform sequential ramp-up to target speed followed by ramp-down to stop.
+
+#### Syntax
+
+```c
+motor.rampUpAndDown(direction, rampUpMs, rampDownMs);
+```
+
+#### Parameters
+
+* **direction**: Motor rotation direction (`TomIBT2::CW` or `TomIBT2::CCW`)
+* **rampUpMs**: Time in milliseconds for ramp-up phase
+* **rampDownMs**: Time in milliseconds for ramp-down phase
+
+#### Example
+
+```c
+void setup() {
+  motor.begin();
+  motor.setTargetSpeedPercent(75);  // Set target to 75%
+}
+
+void loop() {
+  motor.rampUpAndDown(TomIBT2::CW, 3000, 2000);  // 3s up, 2s down
+
+  if (!motor.isRamping() && !motor.isMoving()) {
+    delay(2000);  // Pause between cycles
+  }
+}
+```
+
+#### See also
+
+* [rampUp()](#rampup)
+* [rampDown()](#rampdown)
+* [setTargetSpeed()](#settargetspeed)
+
+---
+
+## Speed Setting Methods
 
 ### `setTargetSpeed()`
 
-Control the speed of the motor by value from 0 - 255
+Set target speed for ramping operations using absolute values.
 
 #### Syntax
 
@@ -236,39 +282,31 @@ Control the speed of the motor by value from 0 - 255
 motor.setTargetSpeed(speed);
 ```
 
-#### Parameter
+#### Parameters
 
-* speed: the value from 0 - 255 to set the target speed of the motor
+* **speed**: Target speed (0-255, automatically clamped to valid range)
 
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
 void setup() {
   motor.begin();
+  motor.setTargetSpeed(200);  // Set target to 200/255
 }
 
 void loop() {
-    motor.setTargetSpeed(255);
-    motor.rampUp(TomIBT2::CW, 2000);
+  motor.rampUp(TomIBT2::CW, 2000);
 }
 ```
 
 #### See also
 
-* [setTargetSpeed()](#settargetspeed)
+* [setTargetSpeedPercent()](#settargetspeedpercent)
+* [rampUp()](#rampup)
 
 ### `setTargetSpeedPercent()`
 
-Control the speed percentage of the motor by value from 0 - 100. This is essentially the same as `setTargetSpeed()` but with a smaller input scale.
+Set target speed for ramping operations using percentage values.
 
 #### Syntax
 
@@ -276,173 +314,290 @@ Control the speed percentage of the motor by value from 0 - 100. This is essenti
 motor.setTargetSpeedPercent(percent);
 ```
 
-#### Parameter
+#### Parameters
 
-* percent: the value from 0 - 100 to set the target speed of the motor
+* **percent**: Target speed percentage (0-100, automatically clamped)
 
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
 void setup() {
   motor.begin();
+  motor.setTargetSpeedPercent(80);  // Set target to 80%
 }
 
 void loop() {
-    motor.setTargetSpeedPercent(80);
-    motor.rampUp(TomIBT2::CW, 2000);
+  motor.rampUp(TomIBT2::CW, 2000);
 }
 ```
 
 #### See also
 
-* [setTargetSpeedPercent()](#settargetspeedpercent)
+* [setTargetSpeed()](#settargetspeed)
+* [getCurrentSpeedPercent()](#getcurrentspeedpercent)
+
+---
+
+## State Monitoring Methods
 
 ### `getCurrentSpeed()`
 
-Get the value of motor speed currently.
+Get current motor speed as absolute value.
 
 #### Syntax
 
 ```c
-motor.getCurrentSpeed();
+int speed = motor.getCurrentSpeed();
 ```
 
-#### Return
+#### Returns
 
-Returns an integer from 0 - 255 for the current motor speed.
+Integer from 0-255 representing current motor speed.
 
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  Serial.begin(115200);
-
-  motor.begin();
-}
-
 void loop() {
-    motor.setTargetSpeed(100);
-    motor.rampUp(TomIBT2::CW, 2000);
+  motor.rotate(150, TomIBT2::CW);
 
-    Serial.println(motor.getCurrentSpeed());
-}
-```
-
-#### See also
-
-* [getCurrentSpeed()](#getcurrentspeed)
-
-### `getCurrentSpeedPercent()`
-
-Get the percent of motor speed currently.
-
-#### Syntax
-
-```c
-motor.getCurrentSpeedPercent();
-```
-
-#### Return
-
-Returns an integer from 0 - 100 for the current motor speed.
-
-#### Example
-
-```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  Serial.begin(115200);
-
-  motor.begin();
-}
-
-void loop() {
-    motor.setTargetSpeed(100);
-    motor.rampUp(TomIBT2::CW, 2000);
-
-    Serial.println(motor.getCurrentSpeedPercent());
+  int currentSpeed = motor.getCurrentSpeed();
+  Serial.print("Current speed: ");
+  Serial.println(currentSpeed);  // Will print 150
 }
 ```
 
 #### See also
 
 * [getCurrentSpeedPercent()](#getcurrentspeedpercent)
+* [isMoving()](#ismoving)
 
-### `getCurrentDirection()`
+### `getCurrentSpeedPercent()`
 
-Get the direction of motor speed currently.
+Get current motor speed as percentage value.
 
 #### Syntax
 
 ```c
-motor.getCurrentDirection();
+int percent = motor.getCurrentSpeedPercent();
 ```
 
-#### Return
+#### Returns
 
-Returns a clockwise (CW) or counter clockwise (CCW) for the current motor direction.
+Integer from 0-100 representing current motor speed percentage.
 
 #### Example
 
 ```c
-#include <TomIBT2.h>
-
-#define MOTOR_PIN_R_EN        7
-#define MOTOR_PIN_L_EN        8
-#define MOTOR_PIN_RPWM        10
-#define MOTOR_PIN_LPWM        9
-
-TomIBT2 motor(MOTOR_PIN_R_EN, MOTOR_PIN_L_EN, MOTOR_PIN_RPWM, MOTOR_PIN_LPWM);
-
-void setup() {
-  Serial.begin(115200);
-
-  motor.begin();
-}
-
 void loop() {
-    motor.setTargetSpeed(100);
-    motor.rampUp(TomIBT2::CW, 2000);
+  motor.rotate(128, TomIBT2::CW);
 
-    switch(motor.getCurrentSpeedPercent()) {
-        case TomIBT2::CW: {
-            Serial.println("CW");
-            break;
-        }
-        case TomIBT2::CCW: {
-            Serial.println("CW");
-            break;
-        }
-    }
+  int speedPercent = motor.getCurrentSpeedPercent();
+  Serial.print("Speed: ");
+  Serial.print(speedPercent);
+  Serial.println("%");  // Will print approximately 50%
 }
 ```
 
 #### See also
 
-* [getCurrentDirection()](#getcurrentdirection)
+* [getCurrentSpeed()](#getcurrentspeed)
+* [setTargetSpeedPercent()](#settargetspeedpercent)
+
+### `getCurrentDirection()`
+
+Get current motor rotation direction.
+
+#### Syntax
+
+```c
+TomIBT2::Direction direction = motor.getCurrentDirection();
+```
+
+#### Returns
+
+Direction enum value:
+* `TomIBT2::CW` - Clockwise rotation
+* `TomIBT2::CCW` - Counter-clockwise rotation
+* `TomIBT2::UNKNOWN` - Unknown/unset direction
+
+#### Example
+
+```c
+void loop() {
+  motor.rotate(200, TomIBT2::CW);
+
+  switch(motor.getCurrentDirection()) {
+    case TomIBT2::CW:
+      Serial.println("Rotating clockwise");
+      break;
+    case TomIBT2::CCW:
+      Serial.println("Rotating counter-clockwise");
+      break;
+    case TomIBT2::UNKNOWN:
+      Serial.println("Direction unknown");
+      break;
+  }
+}
+```
+
+#### See also
+
+* [rotate()](#rotate)
+* [isMoving()](#ismoving)
+
+### `isRamping()`
+
+Check if motor is currently performing a ramping operation (either up or down).
+
+#### Syntax
+
+```c
+bool ramping = motor.isRamping();
+```
+
+#### Returns
+
+* `true` if ramping operation is in progress
+* `false` if no ramping operation is active
+
+#### Example
+
+```c
+void loop() {
+  motor.rampUp(TomIBT2::CW, 2000);
+
+  if (motor.isRamping()) {
+    Serial.println("Motor is ramping...");
+  } else {
+    Serial.println("Ramping complete");
+  }
+}
+```
+
+#### See also
+
+* [rampUp()](#rampup)
+* [rampDown()](#rampdown)
+* [isMoving()](#ismoving)
+
+### `isMoving()`
+
+Check if motor is currently moving (speed greater than zero).
+
+#### Syntax
+
+```c
+bool moving = motor.isMoving();
+```
+
+#### Returns
+
+* `true` if motor speed is greater than 0
+* `false` if motor is stopped
+
+#### Example
+
+```c
+void loop() {
+  if (motor.isMoving()) {
+    Serial.print("Motor running at ");
+    Serial.print(motor.getCurrentSpeedPercent());
+    Serial.println("%");
+  } else {
+    Serial.println("Motor stopped");
+  }
+
+  delay(500);
+}
+```
+
+#### See also
+
+* [getCurrentSpeed()](#getcurrentspeed)
+* [isRamping()](#isramping)
+* [stop()](#stop)
+
+---
+
+## Direction Constants
+
+### Direction Enumeration
+
+```c
+enum Direction {
+  CW = 1,     // Clockwise rotation
+  CCW = 2,    // Counter-clockwise rotation
+  UNKNOWN = 3 // Unknown/unset direction
+};
+```
+
+#### Usage
+
+```c
+motor.rotate(255, TomIBT2::CW);     // Clockwise
+motor.rotate(128, TomIBT2::CCW);    // Counter-clockwise
+```
+
+---
+
+## Complete Example
+
+```c
+#include <TomIBT2.h>
+
+#define MOTOR_R_EN    7
+#define MOTOR_L_EN    8
+#define MOTOR_RPWM    10
+#define MOTOR_LPWM    9
+
+TomIBT2 motor(MOTOR_R_EN, MOTOR_L_EN, MOTOR_RPWM, MOTOR_LPWM);
+
+void setup() {
+  Serial.begin(115200);
+  motor.begin();
+  motor.setTargetSpeedPercent(80);
+}
+
+void loop() {
+  // Ramp up
+  Serial.println("Ramping up...");
+  motor.rampUp(TomIBT2::CW, 2000);
+
+  while (motor.isRamping()) {
+    Serial.print("Speed: ");
+    Serial.print(motor.getCurrentSpeedPercent());
+    Serial.println("%");
+    delay(100);
+  }
+
+  // Run at full speed
+  Serial.println("Running at target speed");
+  delay(2000);
+
+  // Ramp down
+  Serial.println("Ramping down...");
+  motor.rampDown(1500);
+
+  while (motor.isRamping()) {
+    Serial.print("Speed: ");
+    Serial.print(motor.getCurrentSpeedPercent());
+    Serial.println("%");
+    delay(100);
+  }
+
+  // Pause
+  Serial.println("Cycle complete, pausing...");
+  delay(2000);
+}
+```
+
+---
+
+## Version History
+
+### v1.2.0 (2025)
+- Fixed `rampUpAndDown()` function implementation
+- Added `isRamping()` and `isMoving()` state monitoring methods
+- Enhanced ramping algorithms with improved timing
+- Added comprehensive input validation
+- Improved const correctness for getter methods
