@@ -1,0 +1,78 @@
+{
+  "name": "TomIBT2",
+  "version": "1.2.0",
+  "description": "Enhanced motor control library for IBT-2 H-Bridge motor driver boards with improved ramping algorithms, input validation, and comprehensive state monitoring",
+  "keywords": [
+    "motor",
+    "driver",
+    "h-bridge",
+    "IBT-2",
+    "pwm",
+    "ramping",
+    "control",
+    "arduino",
+    "esp32",
+    "esp8266"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dhanabhon/TomIBT2.git"
+  },
+  "authors": [
+    {
+      "name": "Tom Dhanabhon",
+      "email": "info@dhanabhon.com",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Dhanabhon/TomIBT2",
+  "dependencies": {},
+  "frameworks": [
+    "arduino",
+    "espidf"
+  ],
+  "platforms": [
+    "atmelavr",
+    "atmelsam",
+    "espressif8266",
+    "espressif32",
+    "teensy",
+    "ststm32",
+    "nordicnrf51",
+    "nordicnrf52"
+  ],
+  "headers": "TomIBT2.h",
+  "examples": [
+    {
+      "name": "BasicControl",
+      "base": "examples/BasicControl",
+      "files": [
+        "BasicControl.ino"
+      ]
+    },
+    {
+      "name": "RampUpControl",
+      "base": "examples/RampUpControl",
+      "files": [
+        "RampUpControl.ino"
+      ]
+    },
+    {
+      "name": "RampUpAndDown",
+      "base": "examples/RampUpAndDown",
+      "files": [
+        "RampUpAndDown.ino"
+      ]
+    }
+  ],
+  "export": {
+    "include": [
+      "src/*",
+      "examples/*",
+      "*.md",
+      "*.txt",
+      "library.properties"
+    ]
+  }
+}
